@@ -1,0 +1,882 @@
+openapi: 3.0.1
+info:
+  title: Party Process Micro Service
+  description: This service is the party process
+  version: v1
+security:
+  - apiKeyHeader: [ ]
+tags:
+  - name: process
+    description: Implements party process
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io/
+  - name: public
+    description: Public endpoints
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io/
+  - name: health
+    description: Verify service status
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io/
+  - name: external
+    description: Implements external endpoints
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io/
+servers:
+  - url: https://api.dev.selfcare.pagopa.it/external/party-process/v1
+paths:
+  '/onboarding/info':
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
+    get:
+      tags:
+        - process
+      summary: get on boarding info
+      description: Return ok
+      operationId: getOnboardingInfo
+      parameters:
+        - name: institutionId
+          description: The internal identifier of the institution
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: institutionExternalId
+          description: The external Id of an institution you can filter the retrieval with
+          in: query
+          schema:
+            type: string
+        - name: states
+          in: query
+          description: comma separated sequence of states to filter the response with
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RelationshipState'
+            default: [ ]
+          explode: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingInfo'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '400':
+          description: Invalid ID supplied
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  '/onboarding/institution/{externalId}/products/{productId}':
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
+    head:
+      tags:
+        - process
+      summary: verify onboarding info
+      description: Checks if the specified institution has been onboarded on the specified product.
+      operationId: verifyOnboarding
+      parameters:
+        - name: externalId
+          in: path
+          description: The external identifier of the institution
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: path
+          description: The identifier of the product
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /institutions/{id}/relationships:
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
+    get:
+      tags:
+        - process
+      summary: returns the relationships related to the institution
+      description: Return ok
+      operationId: getUserInstitutionRelationships
+      parameters:
+        - name: id
+          in: path
+          description: The internal identifier of the institution
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: personId
+          description: the person identifier
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: roles
+          description: comma separated sequence of role to filter the response with
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/PartyRole'
+            default: [ ]
+          explode: false
+        - in: query
+          name: states
+          description: comma separated sequence of states to filter the response with
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RelationshipState'
+            default: [ ]
+          explode: false
+        - in: query
+          name: products
+          description: comma separated sequence of products to filter the response with
+          schema:
+            type: array
+            items:
+              type: string
+            default: [ ]
+          explode: false
+        - in: query
+          name: productRoles
+          description: comma separated sequence of product roles to filter the response with
+          schema:
+            type: array
+            items:
+              type: string
+            default: [ ]
+          explode: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelationshipsResponse'
+        '400':
+          description: Invalid institution id supplied
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /external/institutions/{externalId}/relationships:
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
+    get:
+      tags:
+        - external
+      summary: returns the relationships related to the institution
+      description: Return ok
+      operationId: getUserInstitutionRelationshipsByExternalId
+      parameters:
+        - name: externalId
+          in: path
+          description: The external identifier of the institution
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: personId
+          description: the person identifier
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: roles
+          description: comma separated sequence of role to filter the response with
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/PartyRole'
+            default: [ ]
+          explode: false
+        - in: query
+          name: states
+          description: comma separated sequence of states to filter the response with
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RelationshipState'
+            default: [ ]
+          explode: false
+        - in: query
+          name: products
+          description: comma separated sequence of products to filter the response with
+          schema:
+            type: array
+            items:
+              type: string
+            default: [ ]
+          explode: false
+        - in: query
+          name: productRoles
+          description: comma separated sequence of product roles to filter the response with
+          schema:
+            type: array
+            items:
+              type: string
+            default: [ ]
+          explode: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelationshipsResponse'
+        '400':
+          description: Invalid institution id supplied
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /institutions/{id}/products:
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
+    get:
+      tags:
+        - process
+      summary: institution products retrieval
+      description: retrieves the products this institution is related to.
+      operationId: retrieveInstitutionProducts
+      parameters:
+        - name: id
+          in: path
+          description: The internal identifier of the institution
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: states
+          in: query
+          description: comma separated sequence of states to filter the response with
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProductState'
+            default: [ ]
+          explode: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+        '404':
+          description: Institution not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /external/institutions/{externalId}/products:
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
+    get:
+      tags:
+        - external
+      summary: institution products retrieval
+      description: retrieves the products this institution is related to.
+      operationId: retrieveInstitutionProductsByExternalId
+      parameters:
+        - name: externalId
+          in: path
+          description: The external identifier of the institution
+          required: true
+          schema:
+            type: string
+        - name: states
+          in: query
+          description: comma separated sequence of states to filter the response with
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ProductState'
+            default: [ ]
+          explode: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+        '404':
+          description: Institution not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /relationships/{relationshipId}:
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
+    get:
+      tags:
+        - process
+      summary: Gets the corresponding relationship
+      description: Gets relationship
+      operationId: getRelationship
+      parameters:
+        - name: relationshipId
+          in: path
+          description: The identifier of the relationship
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelationshipInfo'
+        '400':
+          description: Invalid id supplied
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  '/institutions/{id}':
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
+    get:
+      tags:
+        - process
+      summary: Gets the corresponding institution using internal institution id
+      description: Gets institution using internal institution id
+      operationId: getInstitution
+      parameters:
+        - name: id
+          in: path
+          description: The internal identifier of the institution
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Institution'
+        '400':
+          description: Invalid id supplied
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  '/external/institutions/{externalId}':
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
+    get:
+      tags:
+        - external
+      summary: Gets the corresponding institution using external institution id
+      description: Gets institution using external institution id
+      operationId: getInstitutionByExternalId
+      parameters:
+        - name: externalId
+          in: path
+          description: The external identifier of the institution
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Institution'
+        '400':
+          description: Invalid id supplied
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /onboarding/relationship/{relationshipId}/document:
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
+    get:
+      tags:
+        - process
+      summary: Get an onboarding document
+      operationId: getOnboardingDocument
+      parameters:
+        - name: relationshipId
+          in: path
+          description: the relationship id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Signed onboarding document retrieved
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Document not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+  /status:
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
+    get:
+      tags:
+        - health
+      summary: Health status endpoint
+      description: Return ok
+      operationId: getStatus
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+components:
+  parameters:
+    SelfcareUID:
+      in: header
+      name: X-selfcare-uid
+      required: true
+      schema:
+        type: string
+  schemas:
+    OnboardingRequest:
+      required:
+        - users
+        - institutionId
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        institutionId:
+          type: string
+        contract:
+          $ref: '#/components/schemas/OnboardingContract'
+      additionalProperties: false
+    OnboardingContract:
+      required:
+        - version
+        - path
+      properties:
+        version:
+          type: string
+        path:
+          type: string
+      additionalProperties: false
+    RelationshipInfo:
+      required:
+        - id
+        - from
+        - to
+        - name
+        - surname
+        - taxCode
+        - certification
+        - institutionContacts
+        - role
+        - product
+        - state
+        - createdAt
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        from:
+          type: string
+          format: uuid
+        to:
+          type: string
+          format: uuid
+        name:
+          type: string
+        surname:
+          type: string
+        taxCode:
+          type: string
+        certification:
+          $ref: '#/components/schemas/Certification'
+        institutionContacts:
+          $ref: '#/components/schemas/Contacts'
+        role:
+          $ref: '#/components/schemas/PartyRole'
+        product:
+          $ref: '#/components/schemas/ProductInfo'
+        state:
+          $ref: '#/components/schemas/RelationshipState'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    RelationshipsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/RelationshipInfo'
+    User:
+      required:
+        - name
+        - surname
+        - taxCode
+        - role
+        - product
+        - productRole
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        taxCode:
+          type: string
+        role:
+          $ref: '#/components/schemas/PartyRole'
+        email:
+          type: string
+        product:
+          type: string
+        productRole:
+          type: string
+      additionalProperties: false
+    Certification:
+      enum:
+        - SPID
+        - NONE
+      type: string
+    Contact:
+      required:
+        - email
+      properties:
+        email:
+          type: string
+      additionalProperties: false
+    Contacts:
+      additionalProperties:
+        type: array
+        items:
+          $ref: '#/components/schemas/Contact'
+    PersonInfo:
+      required:
+        - name
+        - surname
+        - taxCode
+        - certification
+        - institutionContacts
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        taxCode:
+          type: string
+        certification:
+          $ref: '#/components/schemas/Certification'
+        institutionContacts:
+          $ref: '#/components/schemas/Contacts'
+      additionalProperties: false
+    ProductInfo:
+      required:
+        - id
+        - role
+        - createdAt
+      type: object
+      properties:
+        id:
+          type: string
+        role:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    OnboardingData:
+      required:
+        - id
+        - institutionId
+        - taxCode
+        - description
+        - digitalAddress
+        - address
+        - zipCode
+        - state
+        - role
+        - productInfo
+        - attributes
+      properties:
+        id:
+          type: string
+          format: uuid
+        institutionId:
+          type: string
+        description:
+          type: string
+        taxCode:
+          type: string
+        digitalAddress:
+          type: string
+        address:
+          type: string
+        zipCode:
+          type: string
+        state:
+          $ref: '#/components/schemas/RelationshipState'
+        role:
+          $ref: '#/components/schemas/PartyRole'
+        productInfo:
+          $ref: '#/components/schemas/ProductInfo'
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attribute'
+          description: certified attributes bound to this institution
+      additionalProperties: false
+    Attribute:
+      required:
+        - origin
+        - code
+        - description
+      type: object
+      properties:
+        origin:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+    Attributes:
+      type: array
+      items:
+        $ref: '#/components/schemas/Attribute'
+    OnboardingInfo:
+      required:
+        - person
+        - institutions
+      properties:
+        person:
+          $ref: '#/components/schemas/PersonInfo'
+        institutions:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnboardingData'
+      additionalProperties: false
+    Product:
+      required:
+        - id
+        - state
+      type: object
+      properties:
+        id:
+          type: string
+        state:
+          $ref: '#/components/schemas/ProductState'
+    Products:
+      required:
+        - products
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    ProductRolesResponse:
+      title: ProductRolesResponse
+      required:
+        - managerRoles
+        - delegateRoles
+        - operatorRoles
+      type: object
+      properties:
+        managerRoles:
+          type: array
+          items:
+            type: string
+          description: binding between manager and its platform roles
+        delegateRoles:
+          type: array
+          items:
+            type: string
+          description: binding between delegate and its platform roles
+        operatorRoles:
+          type: array
+          items:
+            type: string
+          description: binding between operator and its platform roles
+      description: This payload contains the currently defined bindings between roles and platform roles.
+    PartyRole:
+      enum:
+        - MANAGER
+        - DELEGATE
+        - SUB_DELEGATE
+        - OPERATOR
+      type: string
+      description: Represents the generic available role types for the relationship
+    RelationshipState:
+      enum:
+        - PENDING
+        - ACTIVE
+        - SUSPENDED
+        - DELETED
+        - REJECTED
+      type: string
+      description: Represents the party relationship state
+    ProductState:
+      enum:
+        - PENDING
+        - ACTIVE
+      type: string
+      description: Represents the product state
+    Institution:
+      required:
+        - id
+        - institutionId
+        - description
+        - digitalAddress
+        - address
+        - zipCode
+        - taxCode
+        - attributes
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 97c0f418-bcb3-48d4-825a-fe8b29ae68e5
+        institutionId:
+          type: string
+          description: institution id (e.g iPA code)
+          example: c_f205
+        description:
+          type: string
+          example: AGENCY X
+        digitalAddress:
+          type: string
+          format: email
+          example: email@pec.mail.org
+        address:
+          type: string
+          example: via del campo
+        zipCode:
+          type: string
+          example: '20100'
+        taxCode:
+          type: string
+          description: institution tax code
+        attributes:
+          $ref: '#/components/schemas/Attributes'
+      additionalProperties: false
+    Problem:
+      required:
+        - type
+        - status
+        - title
+        - errors
+      properties:
+        type:
+          type: string
+          description: URI reference of type definition
+        status:
+          maximum: 600.0
+          exclusiveMaximum: true
+          minimum: 100.0
+          type: integer
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+          format: int32
+          example: 503
+        title:
+          maxLength: 64
+          pattern: '^[ -~]{0,64}$'
+          type: string
+          description: 'A short, summary of the problem type. Written in english and readable'
+          example: Service Unavailable
+        detail:
+          maxLength: 4096
+          pattern: '^.{0,1024}$'
+          type: string
+          description: A human readable explanation of the problem.
+          example: Request took too long to complete.
+        errors:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemError'
+      additionalProperties: false
+    ProblemError:
+      required:
+        - code
+        - detail
+      properties:
+        code:
+          maxLength: 8
+          minLength: 8
+          pattern: '^[0-9]{3}-[0-9]{4}$'
+          type: string
+          description: Internal code of the error
+          example: 123-4567
+        detail:
+          maxLength: 4096
+          pattern: '^.{0,1024}$'
+          type: string
+          description: A human readable explanation specific to this occurrence of the problem.
+          example: Parameter not valid
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header

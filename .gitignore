@@ -1,0 +1,15 @@
+target/
+.idea
+project/project
+project/target
+.vscode
+metals.sbt
+.bloop
+.metals
+.bsp
+.openapi-generator
+party-management-client/src/
+party-process-client/src/
+.DS_Store
+party-process-client/project/build.properties
+.env
