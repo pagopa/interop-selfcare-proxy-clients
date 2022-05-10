@@ -33,22 +33,6 @@ object ProjectSettings {
       "interfaceVersion" -> interfaceVersion
     )
 
-    def enableContractTest: Project = {
-      lazy val ContractTest = config("contract") extend (Test)
-
-      lazy val testSettings: Seq[Def.Setting[_]] =
-        inConfig(ContractTest)(Defaults.testTasks) ++ Seq(
-          Test / testOptions               := Seq(Tests.Filter(unitFilter)),
-          ContractTest / testOptions       := Seq(Tests.Filter(contractFilter)),
-          Test / parallelExecution         := false,
-          ContractTest / parallelExecution := false
-        )
-
-      project
-        .configs(ContractTest)
-        .settings(testSettings)
-    }
-
     def setupBuildInfo: Project = {
       project
         .enablePlugins(BuildInfoPlugin)
