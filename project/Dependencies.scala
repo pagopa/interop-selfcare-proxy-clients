@@ -14,10 +14,7 @@ object Dependencies {
 
   private[this] object pagopa {
     lazy val namespace = "it.pagopa"
-
-    lazy val commons = namespace %% "interop-commons-utils" % commonsVersion
-    lazy val jwt     = namespace %% "interop-commons-jwt"   % commonsVersion
-
+    lazy val commons   = namespace %% "interop-commons-utils" % commonsVersion
   }
 
   private[this] object json4s {
@@ -35,8 +32,7 @@ object Dependencies {
       akka.slf4j      % Compile,
       json4s.jackson  % Compile,
       json4s.ext      % Compile,
-      pagopa.commons  % Compile,
-      pagopa.jwt      % Compile
+      pagopa.commons  % Compile
     )
   }
 }
