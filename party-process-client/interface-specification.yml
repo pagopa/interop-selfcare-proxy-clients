@@ -27,7 +27,7 @@ tags:
       description: Find out more
       url: http://swagger.io/
 servers:
-  - url: https://api.dev.selfcare.pagopa.it/external/party-process/v1
+  - url: "https://party-process"
 paths:
   '/onboarding/info':
     parameters:

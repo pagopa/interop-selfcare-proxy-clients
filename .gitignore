@@ -10,6 +10,9 @@ metals.sbt
 .openapi-generator
 party-management-client/src/
 party-process-client/src/
+user-registry-client/src/
 .DS_Store
 party-process-client/project/build.properties
+party-management-client/project/build.properties
+user-registry-client/project/build.properties
 .env
