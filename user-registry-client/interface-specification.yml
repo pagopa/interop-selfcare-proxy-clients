@@ -35,14 +35,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - birthDate
-                - email
-                - familyName
-                - fiscalCode
-                - name
-                - workContacts
+              $ref: "#/components/schemas/Field"
           style: form
           required: true
       responses:
@@ -137,6 +130,15 @@ components:
           additionalProperties:
             $ref: "#/components/schemas/WorkContactResource"
           description: User work contacts
+    Field:
+      type: string
+      enum:
+        - birthDate
+        - email
+        - familyName
+        - fiscalCode
+        - name
+        - workContacts
   securitySchemes:
     apiKeyHeader:
       type: apiKey
