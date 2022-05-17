@@ -4,7 +4,7 @@ info:
   description: This service is the party process
   version: v1
 security:
-  - apiKeyHeader: [ ]
+  - apiKeySelfcare: [ ]
 tags:
   - name: process
     description: Implements party process
@@ -491,7 +491,7 @@ components:
   parameters:
     SelfcareUID:
       in: header
-      name: X-selfcare-uid
+      name: x-selfcare-uid
       required: true
       schema:
         type: string

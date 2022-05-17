@@ -25,7 +25,7 @@ tags:
       description: Find out more
       url: http://swagger.io/
 security:
-  - apiKeyHeader: [ ]
+  - apiKeySelfcare: [ ]
 servers:
   - url: "https://party-management"
 paths:
@@ -326,7 +326,7 @@ components:
   parameters:
     SelfcareUID:
       in: header
-      name: X-selfcare-uid
+      name: x-selfcare-uid
       required: true
       schema:
         type: string
@@ -603,7 +603,7 @@ components:
           description: institution recipient code
       additionalProperties: false
   securitySchemes:
-    apiKeyHeader:
+    apiKeyAzure:
       type: apiKey
       name: Ocp-Apim-Subscription-Key
       in: header

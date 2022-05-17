@@ -12,8 +12,6 @@ servers:
   - url: "https://user-registry"
 paths:
   '/users/{id}':
-    parameters:
-      - $ref: '#/components/parameters/SelfcareUID'
     get:
       tags:
         - user
@@ -52,13 +50,6 @@ paths:
         '404':
           description: Not found
 components:
-  parameters:
-    SelfcareUID:
-      in: header
-      name: X-selfcare-uid
-      required: true
-      schema:
-        type: string
   schemas:
     CertifiableFieldResourceOfLocalDate:
       title: CertifiableFieldResourceOfLocalDate
