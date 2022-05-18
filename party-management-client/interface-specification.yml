@@ -603,7 +603,7 @@ components:
           description: institution recipient code
       additionalProperties: false
   securitySchemes:
-    apiKeyAzure:
+    apiKeySelfcare:
       type: apiKey
       name: Ocp-Apim-Subscription-Key
       in: header
