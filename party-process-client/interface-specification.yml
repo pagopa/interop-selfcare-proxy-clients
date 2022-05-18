@@ -3,8 +3,6 @@ info:
   title: Party Process Micro Service
   description: This service is the party process
   version: v1
-security:
-  - apiKeySelfcare: [ ]
 tags:
   - name: process
     description: Implements party process
@@ -28,6 +26,8 @@ tags:
       url: http://swagger.io/
 servers:
   - url: "https://party-process"
+security:
+  - apiKeySelfcare: [ ]
 paths:
   '/onboarding/info':
     parameters:
@@ -826,7 +826,7 @@ components:
         - code
         - detail
   securitySchemes:
-    apiKeyHeader:
+    apiKeySelfcare:
       type: apiKey
       name: Ocp-Apim-Subscription-Key
       in: header

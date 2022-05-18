@@ -3,13 +3,13 @@ info:
   title: pdv-ms-user-registry
   description: User Registry API documentation
   version: "1.0-SNAPSHOT"
-security:
-  - apiKeyHeader: [ ]
 tags:
   - name: user
     description: User operations
 servers:
   - url: "https://user-registry"
+security:
+  - apiKeyHeader: [ ]
 paths:
   '/users/{id}':
     get:
