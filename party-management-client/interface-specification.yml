@@ -306,6 +306,38 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem'
+  /bulk/institutions:
+    post:
+      summary: Retrieves a collection of institutions
+      tags:
+        - party
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkPartiesSeed'
+      responses:
+        '200':
+          description: collection of institutions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkInstitutions'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+        '404':
+          description: Institutions not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem'
+      operationId: bulkInstitutions
+      description: 'returns a collection of all the parties for the corresponding identifiers.'
   /status:
     get:
       parameters:
@@ -602,6 +634,33 @@ components:
           type: boolean
           description: institution recipient code
       additionalProperties: false
+    BulkInstitutions:
+      type: object
+      required:
+        - found
+        - notFound
+      properties:
+        found:
+          type: array
+          description: the collection of institutions found.
+          items:
+            $ref: '#/components/schemas/Institution'
+        notFound:
+          type: array
+          items:
+            type: string
+          description: the identifiers of institutions not found.
+    BulkPartiesSeed:
+      type: object
+      required:
+        - partyIdentifiers
+      properties:
+        partyIdentifiers:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: the identifiers of party
   securitySchemes:
     apiKeySelfcare:
       type: apiKey
