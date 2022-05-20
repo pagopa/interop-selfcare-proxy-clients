@@ -307,6 +307,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problem'
   /bulk/institutions:
+    parameters:
+      - $ref: '#/components/parameters/SelfcareUID'
     post:
       summary: Retrieves a collection of institutions
       tags:
