@@ -29,7 +29,7 @@ pipeline {
     MAVEN_REPO = "${env.MAVEN_REPO}"
     GITHUB_PAT = credentials('github-pat')
     NEXUS_CREDENTIALS = credentials('pdnd-nexus')
-    REPO_NAME="""${sh(returnStdout:true, script: 'echo ${GIT_URL} | sed "s_git@github\\.com:pagopa/\\(.*\\)\\.git_\\1_g"')}""".trim()
+    REPO_NAME="""${sh(returnStdout:true, script: 'echo ${GIT_URL} | sed "s_https://github.com/pagopa/\\(.*\\)\\.git_\\1_g"')}""".trim()
   }
   stages {
     stage('Test') {
