@@ -166,7 +166,7 @@ object ParametersMap {
 
     def asFormattedParamsList: List[(String, Any)] = m.toList.flatMap(formattedParams)
 
-    def asFormattedParams: Map[String, Any] = m.flatMap(formattedParams)
+    def asFormattedParams: Seq[(String, Any)] = m.toSeq.flatMap(formattedParams)
 
     private def urlEncode(v: Any) = String.valueOf(v)   //double encoding removed
 
