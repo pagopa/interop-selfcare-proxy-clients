@@ -58,12 +58,13 @@ import {{invokerPackage}}.ApiKeyLocations._
         {{#authMethods}}{{#isApiKey}}(implicit {{name}}:ApiKeyValue){{/isApiKey}} {{/authMethods}}: ApiRequest[{{>operationReturnType}}] =
         ApiRequest[{{>operationReturnType}}](ApiMethods.{{httpMethod.toUpperCase}}, baseUrl, "{{{path}}}", {{#consumes.0}}"{{{mediaType}}}"{{/consumes.0}}{{^consumes}}"application/json"{{/consumes}})
         {{#authMethods}}{{#isApiKey}}.withApiKey({{name}}, "{{keyParamName}}", {{#isKeyInQuery}}QUERY{{/isKeyInQuery}}{{#isKeyInHeader}}HEADER{{/isKeyInHeader}}{{#isKeyInCookie}}COOKIE{{/isKeyInCookie}})
-        {{/isApiKey}}{{#isBasic}}{{#isBasicBasic}}.withCredentials(basicAuth){{/isBasicBasic}}{{#isBasicBearer}}.withCredentials(bearerToken){{/isBasicBearer}}{{/isBasic}}{{/authMethods}}{{#bodyParam}}.withBody({{paramName}})
-        {{/bodyParam}}{{#formParams}}.withFormParam({{>paramCreation}})
-        {{/formParams}}{{#queryParams}}.withQueryParam({{>paramCreation}})
-        {{/queryParams}}{{#pathParams}}.withPathParam({{>paramCreation}})
-        {{/pathParams}}{{#headerParams}}.withHeaderParam({{>paramCreation}})
-        {{/headerParams}}{{#responses}}{{^isWildcard}}{{#dataType}}.with{{>responseState}}Response[{{dataType}}]({{code}})
+        {{/isApiKey}}{{#isBasic}}{{#isBasicBasic}}.withCredentials(basicAuth){{/isBasicBasic}}{{#isBasicBearer}}.withCredentials(bearerToken){{/isBasicBearer}}{{/isBasic}}{{/authMethods}}
+        {{#bodyParam}}.withBody({{paramName}}){{/bodyParam}}
+        {{#formParams}}.withFormParam({{>paramCreation}}){{/formParams}}
+        {{#queryParams}}.withQueryParam({{>paramCreation}}){{/queryParams}}
+        {{#pathParams}}.withPathParam({{>paramCreation}}){{/pathParams}}
+        {{#headerParams}}.withHeaderParam({{>paramCreation}}){{/headerParams}}
+        {{#responses}}{{^isWildcard}}{{#dataType}}.with{{>responseState}}Response[{{dataType}}]({{code}})
         {{/dataType}}{{^dataType}}.with{{>responseState}}Response[Unit]({{code}})
         {{/dataType}}{{/isWildcard}}{{/responses}}{{#responses}}{{#isWildcard}}{{#dataType}}.withDefault{{>responseState}}Response[{{dataType}}]
         {{/dataType}}{{^dataType}}.withDefault{{>responseState}}Response[Unit]
