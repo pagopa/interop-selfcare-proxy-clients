@@ -392,7 +392,6 @@ components:
       properties:
         id:
           type: string
-          format: uuid
           example: 97c0f418-bcb3-48d4-825a-fe8b29ae68e5
         externalId:
           type: string
@@ -502,7 +501,6 @@ components:
         to:
           type: string
           description: institution ID
-          format: uuid
         filePath:
           type: string
           description: path of the file containing the signed onboarding document
