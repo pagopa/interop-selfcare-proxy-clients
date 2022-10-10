@@ -1,7 +1,7 @@
 import scala.sys.process._
 import scala.util.Try
 
-ThisBuild / scalaVersion     := "2.13.8"
+ThisBuild / scalaVersion     := "2.13.10"
 ThisBuild / organization     := "it.pagopa"
 ThisBuild / organizationName := "Pagopa S.p.A."
 ThisBuild / version          := ComputeVersion.version
