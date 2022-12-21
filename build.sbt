@@ -5,10 +5,9 @@ ThisBuild / scalaVersion     := "2.13.10"
 ThisBuild / organization     := "it.pagopa"
 ThisBuild / organizationName := "Pagopa S.p.A."
 ThisBuild / version          := ComputeVersion.version
-
-ThisBuild / resolvers += "Pagopa Nexus Snapshots" at s"https://${System.getenv("MAVEN_REPO")}/nexus/repository/maven-snapshots/"
-ThisBuild / resolvers += "Pagopa Nexus Releases" at s"https://${System.getenv("MAVEN_REPO")}/nexus/repository/maven-releases/"
-ThisBuild / credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
+ThisBuild / githubOwner      := "pagopa"
+ThisBuild / githubRepository := "interop-selfcare-proxy-clients"
+ThisBuild / resolvers += Resolver.githubPackages("pagopa")
 
 val generateCode  = taskKey[Unit]("A task for generating the code starting from the swagger definition")
 val packagePrefix = settingKey[String]("The package prefix derived from the uservice name")
@@ -48,14 +47,7 @@ lazy val partyProcessClient = project
     },
     scalacOptions       := Seq(),
     libraryDependencies := Dependencies.Jars.client,
-    updateOptions       := updateOptions.value.withGigahorse(false),
-    publishTo           := {
-      val nexus = s"https://${System.getenv("MAVEN_REPO")}/nexus/repository/"
-      if (isSnapshot.value)
-        Some("snapshots" at nexus + "maven-snapshots/")
-      else
-        Some("releases" at nexus + "maven-releases/")
-    }
+    updateOptions       := updateOptions.value.withGigahorse(false)
   )
 
 cleanFiles += baseDirectory.value / "party-management-client" / "src"
@@ -87,14 +79,7 @@ lazy val partyManagementClient = project
     },
     scalacOptions       := Seq(),
     libraryDependencies := Dependencies.Jars.client,
-    updateOptions       := updateOptions.value.withGigahorse(false),
-    publishTo           := {
-      val nexus = s"https://${System.getenv("MAVEN_REPO")}/nexus/repository/"
-      if (isSnapshot.value)
-        Some("snapshots" at nexus + "maven-snapshots/")
-      else
-        Some("releases" at nexus + "maven-releases/")
-    }
+    updateOptions       := updateOptions.value.withGigahorse(false)
   )
 
 cleanFiles += baseDirectory.value / "user-registry-client" / "src"
@@ -126,14 +111,7 @@ lazy val userRegistryClient = project
     },
     scalacOptions       := Seq(),
     libraryDependencies := Dependencies.Jars.client,
-    updateOptions       := updateOptions.value.withGigahorse(false),
-    publishTo           := {
-      val nexus = s"https://${System.getenv("MAVEN_REPO")}/nexus/repository/"
-      if (isSnapshot.value)
-        Some("snapshots" at nexus + "maven-snapshots/")
-      else
-        Some("releases" at nexus + "maven-releases/")
-    }
+    updateOptions       := updateOptions.value.withGigahorse(false)
   )
 
 (Compile / compile) := ((Compile / compile) dependsOn partyProcessClient / generateCode).value
