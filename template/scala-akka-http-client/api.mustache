@@ -54,8 +54,7 @@ import {{invokerPackage}}.ApiKeyLocations._
             {{/isArray}}
             {{/isFormParam}}
         {{/allParams}})
-        ({{#headerParams}}{{#isHeaderParam}}{{paramName}}:{{dataType}}{{^-last}},{{/-last}}{{/isHeaderParam}}{{/headerParams}})
-        {{#authMethods}}{{#isApiKey}}(implicit {{name}}:ApiKeyValue){{/isApiKey}} {{/authMethods}}: ApiRequest[{{>operationReturnType}}] =
+        {{#headerParams.0}}({{#headerParams}}{{#isHeaderParam}}{{paramName}}:{{dataType}}{{^-last}},{{/-last}}{{/isHeaderParam}}{{/headerParams}}){{/headerParams.0}}{{#authMethods.0}}(implicit {{#authMethods}}{{#isApiKey}}{{name}}:ApiKeyValue{{/isApiKey}}{{^-last}},{{/-last}}{{/authMethods}}){{/authMethods.0}}: ApiRequest[{{>operationReturnType}}] =
         ApiRequest[{{>operationReturnType}}](ApiMethods.{{httpMethod.toUpperCase}}, baseUrl, "{{{path}}}", {{#consumes.0}}"{{{mediaType}}}"{{/consumes.0}}{{^consumes}}"application/json"{{/consumes}})
         {{#authMethods}}{{#isApiKey}}.withApiKey({{name}}, "{{keyParamName}}", {{#isKeyInQuery}}QUERY{{/isKeyInQuery}}{{#isKeyInHeader}}HEADER{{/isKeyInHeader}}{{#isKeyInCookie}}COOKIE{{/isKeyInCookie}})
         {{/isApiKey}}{{#isBasic}}{{#isBasicBasic}}.withCredentials(basicAuth){{/isBasicBasic}}{{#isBasicBearer}}.withCredentials(bearerToken){{/isBasicBearer}}{{/isBasic}}{{/authMethods}}
