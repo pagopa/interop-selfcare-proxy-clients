@@ -61,7 +61,7 @@ jobs:
         run: sbt ++${{ matrix.scala }} test
 
       - name: Compress target directories
-        run: tar cf targets.tar party-process-client/target party-management-client/target user-registry-client/target project/target
+        run: tar cf targets.tar party-process-client/target party-management-client/target user-registry-client/target selfcare-v2-client/target project/target
 
       - name: Upload target directories
         uses: actions/upload-artifact@v2
