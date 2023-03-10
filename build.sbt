@@ -15,7 +15,7 @@ val projectName   = settingKey[String]("The project name prefix derived from the
 
 lazy val root = (project in file("."))
   .settings(name := "interop-selfcare-proxy-clients", publish / skip := true)
-  .aggregate(partyProcessClient, partyManagementClient, userRegistryClient)
+  .aggregate(partyProcessClient, partyManagementClient, userRegistryClient, selfcareV2Client)
 
 cleanFiles += baseDirectory.value / "party-process-client" / "src"
 cleanFiles += baseDirectory.value / "party-process-client" / "target"
@@ -114,6 +114,40 @@ lazy val userRegistryClient = project
     updateOptions       := updateOptions.value.withGigahorse(false)
   )
 
+cleanFiles += baseDirectory.value / "selfcare-v2-client" / "src"
+cleanFiles += baseDirectory.value / "selfcare-v2-client" / "target"
+
+lazy val selfcareV2Client = project
+  .in(file("selfcare-v2-client"))
+  .settings(
+    name                := "interop-selfcare-v2-client",
+    packagePrefix       := name.value
+      .replaceFirst("interop-", "interop.")
+      .replaceFirst("selfcare-", "selfcare.")
+      .replaceFirst("v2-", "v2.")
+      .replaceAll("-", ""),
+    projectName         := name.value
+      .replaceFirst("interop-", "")
+      .replaceFirst("selfcare-", ""),
+    generateCode        := {
+      Process(s"""openapi-generator-cli generate -t template/scala-akka-http-client
+                 |                               -i selfcare-v2-client/interface-specification.yml
+                 |                               -g scala-akka
+                 |                               -p projectName=${projectName.value}
+                 |                               -p invokerPackage=it.pagopa.${packagePrefix.value}.invoker
+                 |                               -p modelPackage=it.pagopa.${packagePrefix.value}.model
+                 |                               -p apiPackage=it.pagopa.${packagePrefix.value}.api
+                 |                               -p modelPropertyNaming=original
+                 |                               -p dateLibrary=java8
+                 |                               -o selfcare-v2-client""".stripMargin).!!
+    },
+    scalacOptions       := Seq(),
+    libraryDependencies := Dependencies.Jars.client,
+    updateOptions       := updateOptions.value.withGigahorse(false)
+  )
+
 (Compile / compile) := ((Compile / compile) dependsOn partyProcessClient / generateCode).value
 (Compile / compile) := ((Compile / compile) dependsOn partyManagementClient / generateCode).value
 (Compile / compile) := ((Compile / compile) dependsOn userRegistryClient / generateCode).value
+(Compile / compile) := ((Compile / compile) dependsOn selfcareV2Client / generateCode).value
+
