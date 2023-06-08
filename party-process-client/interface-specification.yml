@@ -504,7 +504,6 @@ components:
         - role
         - product
         - state
-        - createdAt
       type: object
       properties:
         id:
