@@ -2115,6 +2115,7 @@ components:
             - PSP
             - PT
             - SCP
+            - AS
           type: string
         origin:
           type: string
