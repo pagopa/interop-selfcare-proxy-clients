@@ -67,6 +67,7 @@ paths:
                   userProductRoles:
                     - string
                   zipCode: string
+                  logo: string
         '400':
           description: Bad Request
           content:
@@ -579,6 +580,7 @@ paths:
               - PT
               - SCP
               - SA
+              - AS
             type: string
       responses:
         '200':
@@ -1304,7 +1306,7 @@ paths:
     get:
       tags:
         - users
-      summary: getUuserById
+      summary: getUserById
       description: Get user by Id
       operationId: getUserInfoUsingGET
       parameters:
@@ -1424,6 +1426,7 @@ components:
             - PT
             - SCP
             - SA
+            - AS
           type: string
           description: Institution's type
         origin:
@@ -1497,6 +1500,7 @@ components:
             - PT
             - SCP
             - SA
+            - AS
           type: string
           description: Institution's type
         origin:
@@ -1532,6 +1536,9 @@ components:
         zipCode:
           type: string
           description: Institution's zipCode
+        logo:
+          type: string
+          description: Institution's logo
     InvalidParam:
       title: InvalidParam
       required:
@@ -1867,6 +1874,8 @@ components:
             - PSP
             - PT
             - SCP
+            - SA
+            - AS
           type: string
         attributes:
           $ref: '#/components/schemas/Attributes'
@@ -1997,6 +2006,8 @@ components:
             - PSP
             - PT
             - SCP
+            - SA
+            - AS
           type: string
         productId:
           type: string
@@ -2051,6 +2062,8 @@ components:
             - PSP
             - PT
             - SCP
+            - SA
+            - AS
           type: string
           description: Institution's type
         productInfo:
@@ -2118,6 +2131,7 @@ components:
             - PSP
             - PT
             - SCP
+            - SA
             - AS
           type: string
         origin:
