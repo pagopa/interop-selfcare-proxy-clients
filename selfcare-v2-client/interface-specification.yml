@@ -529,6 +529,7 @@ paths:
               - PT
               - SCP
               - SA
+              - AS
             type: string
       responses:
         '200':
@@ -891,6 +892,7 @@ components:
             - PT
             - SCP
             - SA
+            - AS
           type: string
           description: Institution's type
         origin:
@@ -959,6 +961,7 @@ components:
             - PT
             - SCP
             - SA
+            - AS
           type: string
           description: Institution's type
         origin:
