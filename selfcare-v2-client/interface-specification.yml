@@ -1804,8 +1804,6 @@ components:
           type: string
         surname:
           type: string
-        taxCode:
-          type: string
     UserResource:
       title: UserResource
       type: object
