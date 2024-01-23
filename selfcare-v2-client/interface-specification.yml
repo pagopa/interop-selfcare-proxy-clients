@@ -1828,9 +1828,6 @@ components:
         surname:
           type: string
           description: User's surname
-        fiscalCode:
-          type: string
-          description: User's fiscal code
     Institution:
       type: object
       properties:
