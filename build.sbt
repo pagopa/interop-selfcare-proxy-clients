@@ -15,104 +15,7 @@ val projectName   = settingKey[String]("The project name prefix derived from the
 
 lazy val root = (project in file("."))
   .settings(name := "interop-selfcare-proxy-clients", publish / skip := true)
-  .aggregate(partyProcessClient, partyManagementClient, userRegistryClient, selfcareV2Client)
-
-cleanFiles += baseDirectory.value / "party-process-client" / "src"
-cleanFiles += baseDirectory.value / "party-process-client" / "target"
-
-lazy val partyProcessClient = project
-  .in(file("party-process-client"))
-  .settings(
-    name                := "interop-selfcare-party-process-client",
-    packagePrefix       := name.value
-      .replaceFirst("interop-", "interop.")
-      .replaceFirst("selfcare-", "selfcare.")
-      .replaceFirst("party-process-", "partyprocess-.")
-      .replaceAll("-", ""),
-    projectName         := name.value
-      .replaceFirst("interop-", "")
-      .replaceFirst("selfcare-", ""),
-    generateCode        := {
-      Process(s"""openapi-generator-cli generate -t template/scala-akka-http-client
-                 |                               -i party-process-client/interface-specification.yml
-                 |                               -g scala-akka
-                 |                               -p projectName=${projectName.value}
-                 |                               -p invokerPackage=it.pagopa.${packagePrefix.value}.invoker
-                 |                               -p modelPackage=it.pagopa.${packagePrefix.value}.model
-                 |                               -p apiPackage=it.pagopa.${packagePrefix.value}.api
-                 |                               -p modelPropertyNaming=original
-                 |                               -p dateLibrary=java8
-                 |                               -p entityStrictnessTimeout=15
-                 |                               -o party-process-client""".stripMargin).!!
-    },
-    scalacOptions       := Seq(),
-    libraryDependencies := Dependencies.Jars.client,
-    updateOptions       := updateOptions.value.withGigahorse(false)
-  )
-
-cleanFiles += baseDirectory.value / "party-management-client" / "src"
-cleanFiles += baseDirectory.value / "party-management-client" / "target"
-
-lazy val partyManagementClient = project
-  .in(file("party-management-client"))
-  .settings(
-    name                := "interop-selfcare-party-management-client",
-    packagePrefix       := name.value
-      .replaceFirst("interop-", "interop.")
-      .replaceFirst("selfcare-", "selfcare.")
-      .replaceFirst("party-management-", "partymanagement.")
-      .replaceAll("-", ""),
-    projectName         := name.value
-      .replaceFirst("interop-", "")
-      .replaceFirst("selfcare-", ""),
-    generateCode        := {
-      Process(s"""openapi-generator-cli generate -t template/scala-akka-http-client
-                 |                               -i party-management-client/interface-specification.yml
-                 |                               -g scala-akka
-                 |                               -p projectName=${projectName.value}
-                 |                               -p invokerPackage=it.pagopa.${packagePrefix.value}.invoker
-                 |                               -p modelPackage=it.pagopa.${packagePrefix.value}.model
-                 |                               -p apiPackage=it.pagopa.${packagePrefix.value}.api
-                 |                               -p modelPropertyNaming=original
-                 |                               -p dateLibrary=java8
-                 |                               -o party-management-client""".stripMargin).!!
-    },
-    scalacOptions       := Seq(),
-    libraryDependencies := Dependencies.Jars.client,
-    updateOptions       := updateOptions.value.withGigahorse(false)
-  )
-
-cleanFiles += baseDirectory.value / "user-registry-client" / "src"
-cleanFiles += baseDirectory.value / "user-registry-client" / "target"
-
-lazy val userRegistryClient = project
-  .in(file("user-registry-client"))
-  .settings(
-    name                := "interop-selfcare-user-registry-client",
-    packagePrefix       := name.value
-      .replaceFirst("interop-", "interop.")
-      .replaceFirst("selfcare-", "selfcare.")
-      .replaceFirst("user-registry-", "userregistry.")
-      .replaceAll("-", ""),
-    projectName         := name.value
-      .replaceFirst("interop-", "")
-      .replaceFirst("selfcare-", ""),
-    generateCode        := {
-      Process(s"""openapi-generator-cli generate -t template/scala-akka-http-client
-                 |                               -i user-registry-client/interface-specification.yml
-                 |                               -g scala-akka
-                 |                               -p projectName=${projectName.value}
-                 |                               -p invokerPackage=it.pagopa.${packagePrefix.value}.invoker
-                 |                               -p modelPackage=it.pagopa.${packagePrefix.value}.model
-                 |                               -p apiPackage=it.pagopa.${packagePrefix.value}.api
-                 |                               -p modelPropertyNaming=original
-                 |                               -p dateLibrary=java8
-                 |                               -o user-registry-client""".stripMargin).!!
-    },
-    scalacOptions       := Seq(),
-    libraryDependencies := Dependencies.Jars.client,
-    updateOptions       := updateOptions.value.withGigahorse(false)
-  )
+  .aggregate(selfcareV2Client)
 
 cleanFiles += baseDirectory.value / "selfcare-v2-client" / "src"
 cleanFiles += baseDirectory.value / "selfcare-v2-client" / "target"
@@ -145,9 +48,5 @@ lazy val selfcareV2Client = project
     libraryDependencies := Dependencies.Jars.client,
     updateOptions       := updateOptions.value.withGigahorse(false)
   )
-
-(Compile / compile) := ((Compile / compile) dependsOn partyProcessClient / generateCode).value
-(Compile / compile) := ((Compile / compile) dependsOn partyManagementClient / generateCode).value
-(Compile / compile) := ((Compile / compile) dependsOn userRegistryClient / generateCode).value
 (Compile / compile) := ((Compile / compile) dependsOn selfcareV2Client / generateCode).value
 
